@@ -1,13 +1,26 @@
-//
 //  VirtualSticksViewController.swift
-//  DJISDKSwiftDemo
-//
 //  Created by Dennis Baldwin on 3/18/20.
 //  Copyright © 2020 DroneBlocks, LLC. All rights reserved.
 //
+//  Make sure you know what you're doing before running this code. This code makes use of the Virtual Sticks API.
+//  This code has only been tested on DJI Spark, but should work on other DJI platforms. I recommend doing this outdoors to get familiar with the
+//  functionality. It can certainly be run indoors since Virtual Sticks do not make use of GPS. Please make sure your flight mode switch is in
+//  the default position. If any point you need to take control the switch can be toggled out of the default position so you have manual control
+//  again. Virtual Sticks DOES NOT allow you to add any manual input to the flight controller when this mode is enabled. Good luck and I hope
+//  to experiment with other flight paths soon.
 
 import UIKit
 import DJISDK
+
+enum FLIGHT_MODE {
+    case ROLL_LEFT_RIGHT
+    case PITCH_FORWARD_BACK
+    case THROTTLE_UP_DOWN
+    case HORIZONTAL_ORBIT
+    case VERTICAL_ORBIT
+    case VERTICAL_SINE_WAVE
+    case HORIZONTAL_SINE_WAVE
+}
 
 class VirtualSticksViewController: UIViewController {
     
@@ -18,6 +31,9 @@ class VirtualSticksViewController: UIViewController {
     let velocity: Float = 0.1
     var x: Float = 0.0
     var y: Float = 0.0
+    var z: Float = 0.0
+    
+    var flightMode: FLIGHT_MODE?
     
 
     override func viewDidLoad() {
@@ -28,8 +44,6 @@ class VirtualSticksViewController: UIViewController {
             
             // Grab a reference to the flight controller
             if let fc = aircraft.flightController {
-                
-                //fc.rollPitchControlMode = DJIVirtualStickRollPitchControlMode.velocity
                 
                 // Store the flightController
                 self.flightController = fc
@@ -71,74 +85,93 @@ class VirtualSticksViewController: UIViewController {
         
     }
     
-    
-    // Trigger the roll timer
     @IBAction func rollLeftRight(_ sender: Any) {
-        x = 0.0
-        radians = 0.0
+        setupFlightMode()
+        flightMode = FLIGHT_MODE.ROLL_LEFT_RIGHT
         
-        if timer != nil {
-            print("invalidating")
-            timer?.invalidate()
-        }
-        
-        timer = Timer.scheduledTimer(timeInterval: 0.05, target: self, selector: #selector(rollTimer), userInfo: nil, repeats: true)
-    }
-    
-    // Begin the roll timer
-    // Positive value rolls right, negative value rolls left
-    @objc func rollTimer() {
-        radians += velocity
-        x = cos(radians)
-        
-        print(radians, ":", x)
-        
-        // Construct the flight control data object
-        var controlData = DJIVirtualStickFlightControlData()
-        controlData.verticalThrottle = 0
-        controlData.pitch = 0
-        controlData.roll = x // Roll only
-        controlData.yaw = 0
-        
-        // Send the control data to the FC
-        self.flightController?.send(controlData, withCompletion: { (error: Error?) in
-            
-            // There's an error so let's stop
-            if error != nil {
-                print("Error sending data")
-                
-                // Disable the timer
-                self.timer?.invalidate()
-            }
-            
-        })
+        // Schedule the timer at 20Hz while the default specified for DJI is 10Hz
+        timer = Timer.scheduledTimer(timeInterval: 0.05, target: self, selector: #selector(timerLoop), userInfo: nil, repeats: true)
     }
     
     @IBAction func pitchForwardBack(_ sender: Any) {
-        radians = 0.0
-        y = 0.0
+        setupFlightMode()
+        flightMode = FLIGHT_MODE.PITCH_FORWARD_BACK
         
-        if timer != nil {
-            print("invalidating")
-            timer?.invalidate()
-        }
-        
-        timer = Timer.scheduledTimer(timeInterval: 0.05, target: self, selector: #selector(pitchTimer), userInfo: nil, repeats: true)
+        // Schedule the timer at 20Hz while the default specified for DJI is 10Hz
+        // Note: changing the frequency will have an impact on the distance flown so BE CAREFUL
+        timer = Timer.scheduledTimer(timeInterval: 0.05, target: self, selector: #selector(timerLoop), userInfo: nil, repeats: true)
     }
     
-    // Begin the pitch timer
-    // Positive value rolls forward, negative value rolls backward
-    @objc func pitchTimer() {
-        radians += velocity
-        y = sin(radians)
+    @IBAction func throttleUpDown(_ sender: Any) {
+        setupFlightMode()
+        flightMode = FLIGHT_MODE.THROTTLE_UP_DOWN
         
-        print(radians, ":", y)
+        // Schedule the timer at 20Hz while the default specified for DJI is 10Hz
+        // Note: changing the frequency will have an impact on the distance flown so BE CAREFUL
+        timer = Timer.scheduledTimer(timeInterval: 0.05, target: self, selector: #selector(timerLoop), userInfo: nil, repeats: true)
+    }
+    
+    @IBAction func horizontalOrbit(_ sender: Any) {
+        setupFlightMode()
+        flightMode = FLIGHT_MODE.HORIZONTAL_ORBIT
+        
+        // Schedule the timer at 20Hz while the default specified for DJI is 10Hz
+        // Note: changing the frequency will have an impact on the distance flown so BE CAREFUL
+        timer = Timer.scheduledTimer(timeInterval: 0.05, target: self, selector: #selector(timerLoop), userInfo: nil, repeats: true)
+    }
+    
+    @IBAction func verticalOrbit(_ sender: Any) {
+        setupFlightMode()
+        flightMode = FLIGHT_MODE.VERTICAL_ORBIT
+        
+        // Schedule the timer at 20Hz while the default specified for DJI is 10Hz
+        // Note: changing the frequency will have an impact on the distance flown so BE CAREFUL
+        timer = Timer.scheduledTimer(timeInterval: 0.05, target: self, selector: #selector(timerLoop), userInfo: nil, repeats: true)
+    }
+    
+    // Timer loop to send values to the flight controller
+    @objc func timerLoop() {
+        
+        // Add velocity to radians before we do any calculation
+        radians += velocity
+        
+        // Determine the flight mode so we can set the proper values
+        switch flightMode {
+        case .ROLL_LEFT_RIGHT:
+            x = cos(radians)
+            y = 0
+            z = 0
+        case .PITCH_FORWARD_BACK:
+            x = 0
+            y = sin(radians)
+            z = 0
+        case .THROTTLE_UP_DOWN:
+            x = 0
+            y = 0
+            z = sin(radians)
+        case .HORIZONTAL_ORBIT:
+            x = cos(radians)
+            y = sin(radians)
+            z = 0
+        case .VERTICAL_ORBIT:
+            x = cos(radians)
+            y = 0
+            z = sin(radians)
+        case .VERTICAL_SINE_WAVE:
+            break
+        case .HORIZONTAL_SINE_WAVE:
+            break
+        case .none:
+            break
+        }
+        
+        print("Sending x: \(x), y: \(y), z: \(z)")
         
         // Construct the flight control data object
         var controlData = DJIVirtualStickFlightControlData()
-        controlData.verticalThrottle = 0
-        controlData.pitch = y // Pitch only
-        controlData.roll = 0
+        controlData.verticalThrottle = z
+        controlData.roll = x
+        controlData.pitch = y
         controlData.yaw = 0
         
         // Send the control data to the FC
@@ -146,6 +179,7 @@ class VirtualSticksViewController: UIViewController {
             
             // There's an error so let's stop
             if error != nil {
+                
                 print("Error sending data")
                 
                 // Disable the timer
@@ -155,6 +189,19 @@ class VirtualSticksViewController: UIViewController {
         })
     }
     
+    // Called before any new flight mode is initiated
+    private func setupFlightMode() {
+        
+        // Reset radians
+        radians = 0.0
+        
+        // Invalidate timer if necessary
+        // This allows switching between flight modes
+        if timer != nil {
+            print("invalidating")
+            timer?.invalidate()
+        }
+    }
     
     
 
