@@ -89,15 +89,15 @@ class VirtualSticksViewController: UIViewController {
         setupFlightMode()
         flightMode = FLIGHT_MODE.ROLL_LEFT_RIGHT
         
-        // Schedule the timer at 20Hz while the default specified for DJI is 10Hz
-        timer = Timer.scheduledTimer(timeInterval: 0.05, target: self, selector: #selector(timerLoop), userInfo: nil, repeats: true)
+        // Schedule the timer at 20Hz while the default specified for DJI is between 5 and 25Hz
+        timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(timerLoop), userInfo: nil, repeats: true)
     }
     
     @IBAction func pitchForwardBack(_ sender: Any) {
         setupFlightMode()
         flightMode = FLIGHT_MODE.PITCH_FORWARD_BACK
         
-        // Schedule the timer at 20Hz while the default specified for DJI is 10Hz
+        // Schedule the timer at 20Hz while the default specified for DJI is between 5 and 25Hz
         // Note: changing the frequency will have an impact on the distance flown so BE CAREFUL
         timer = Timer.scheduledTimer(timeInterval: 0.05, target: self, selector: #selector(timerLoop), userInfo: nil, repeats: true)
     }
@@ -106,7 +106,7 @@ class VirtualSticksViewController: UIViewController {
         setupFlightMode()
         flightMode = FLIGHT_MODE.THROTTLE_UP_DOWN
         
-        // Schedule the timer at 20Hz while the default specified for DJI is 10Hz
+        // Schedule the timer at 20Hz while the default specified for DJI is between 5 and 25Hz
         // Note: changing the frequency will have an impact on the distance flown so BE CAREFUL
         timer = Timer.scheduledTimer(timeInterval: 0.05, target: self, selector: #selector(timerLoop), userInfo: nil, repeats: true)
     }
@@ -115,7 +115,7 @@ class VirtualSticksViewController: UIViewController {
         setupFlightMode()
         flightMode = FLIGHT_MODE.HORIZONTAL_ORBIT
         
-        // Schedule the timer at 20Hz while the default specified for DJI is 10Hz
+        // Schedule the timer at 20Hz while the default specified for DJI is between 5 and 25Hz
         // Note: changing the frequency will have an impact on the distance flown so BE CAREFUL
         timer = Timer.scheduledTimer(timeInterval: 0.05, target: self, selector: #selector(timerLoop), userInfo: nil, repeats: true)
     }
@@ -124,7 +124,7 @@ class VirtualSticksViewController: UIViewController {
         setupFlightMode()
         flightMode = FLIGHT_MODE.VERTICAL_ORBIT
         
-        // Schedule the timer at 20Hz while the default specified for DJI is 10Hz
+        // Schedule the timer at 20Hz while the default specified for DJI is between 5 and 25Hz
         // Note: changing the frequency will have an impact on the distance flown so BE CAREFUL
         timer = Timer.scheduledTimer(timeInterval: 0.05, target: self, selector: #selector(timerLoop), userInfo: nil, repeats: true)
     }
