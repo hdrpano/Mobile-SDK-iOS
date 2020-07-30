@@ -90,7 +90,7 @@ class VirtualSticksViewController: UIViewController {
         flightMode = FLIGHT_MODE.ROLL_LEFT_RIGHT
         
         // Schedule the timer at 20Hz while the default specified for DJI is between 5 and 25Hz
-        timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(timerLoop), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 0.05, target: self, selector: #selector(timerLoop), userInfo: nil, repeats: true)
     }
     
     @IBAction func pitchForwardBack(_ sender: Any) {
