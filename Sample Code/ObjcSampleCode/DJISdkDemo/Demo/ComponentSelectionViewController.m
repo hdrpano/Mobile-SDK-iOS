@@ -31,6 +31,8 @@
 #import "PayloadViewController.h"
 #import "AccessoryAggregationViewController.h"
 #import "UpgradeManagerViewController.h"
+#import "PipelinesViewController.h"
+#import "WaypointV2ViewController.h"
 
 #import "KeyedInterfaceViewController.h"
 #import "VideoLiveStreamingViewController.h"
@@ -60,7 +62,12 @@
     NSMutableArray *sdk40Interfaces = [NSMutableArray new];
     
     if ([product isKindOfClass:[DJIAircraft class]]) {
-        [sdk40Interfaces addObject:[DemoSettingItem itemWithName:@"Waypoint Mission Operator" andClass:[WaypointMissionViewController class]]];
+        
+        if ([product.model isEqualToString:DJIAircraftModelNameMatrice300RTK]) {
+            [sdk40Interfaces addObject:[DemoSettingItem itemWithName:@"Waypoint V2 Mission Operator" andClass:[WaypointV2ViewController class]]];
+        } else {
+            [sdk40Interfaces addObject:[DemoSettingItem itemWithName:@"Waypoint Mission Operator" andClass:[WaypointMissionViewController class]]];
+        }
         [sdk40Interfaces addObject:[DemoSettingItem itemWithName:@"Hotpoint Mission Operator" andClass:[HotpointMissionViewController class]]];
         [sdk40Interfaces addObject:[DemoSettingItem itemWithName:@"FollowMe Mission Operator" andClass:[FollowMeMissionViewController class]]];
         [sdk40Interfaces addObject:[DemoSettingItem itemWithName:@"Timeline Mission Operator" andClass:[TimelineMissionViewController class]]];
@@ -84,9 +91,18 @@
     if ([DemoComponentHelper fetchGimbal]) {
         [components addObject:[DemoSettingItem itemWithName:[DJIGimbalComponent capitalizedString] andClass:[[self componentVCDict] objectForKey:DJIGimbalComponent]]];
     }
-    if ([DemoComponentHelper fetchCamera]) {
-        [components addObject:[DemoSettingItem itemWithName:[DJICameraComponent capitalizedString] andClass:[[self componentVCDict] objectForKey:DJICameraComponent]]];
+    DJIBaseProduct *product = [DemoComponentHelper fetchProduct];
+    if ([product.model isEqualToString:DJIAircraftModelNameMatrice300RTK] && [DemoComponentHelper fetchCameras]) {
+        for (DJICamera *camera in [DemoComponentHelper fetchCameras]) {
+            DemoSettingItem *item = [DemoSettingItem itemWithName:camera.displayName andClass:[[self componentVCDict] objectForKey:DJICameraComponent]];
+            [components addObject:item];
+        }
+    } else {
+        if ([DemoComponentHelper fetchCamera]) {
+            [components addObject:[DemoSettingItem itemWithName:[DJICameraComponent capitalizedString] andClass:[[self componentVCDict] objectForKey:DJICameraComponent]]];
+        }
     }
+
     if ([DemoComponentHelper fetchAirLink]) {
         [components addObject:[DemoSettingItem itemWithName:[DJIAirLinkComponent capitalizedString] andClass:[[self componentVCDict] objectForKey:DJIAirLinkComponent]]];
     }
@@ -107,6 +123,10 @@
     }
     if ([DJISDKManager upgradeManager]) {
         [components addObject:[DemoSettingItem itemWithName:[UpgradeManagerKey capitalizedString] andClass:[UpgradeManagerViewController class]]];
+    }
+    
+    if ([DemoComponentHelper fetchFlightController].onboardSDKDevice.pipelines) {
+        [components addObject:[DemoSettingItem itemWithName:[PipelinesKey capitalizedString] andClass:[PipelinesViewController class]]];
     }
     
     [self.items addObject:components];

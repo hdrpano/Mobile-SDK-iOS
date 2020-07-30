@@ -33,8 +33,8 @@ If you install it successfully, you should get the messages similar to the follo
 ~~~
 Analyzing dependencies
 Downloading dependencies
-Installing DJI-SDK-iOS (4.11.1)
-Installing DJIWidget (1.6.2)
+Installing DJI-SDK-iOS (4.13)
+Installing DJIWidget (1.6.3)
 Installing DJIFlySafeDatabaseResource (01.00.01.17)
 Generating Pods project
 Integrating client project
@@ -67,7 +67,7 @@ One of DJI's aircraft or handheld cameras will be required to run the sample app
 Starting from DJI iOS SDK 4.7, we have replaced the **VideoPreviewer** with **DJIWidget** for video decoding. Please add the following line to your Podfile to install it to your Xcode project:
 
 ~~~
-pod 'DJIWidget', '~> 1.6.2'
+pod 'DJIWidget', '~> 1.6.3'
 ~~~
 
 ## Development Workflow 
@@ -126,7 +126,9 @@ A detailed introduction for missions is [here](./docs/README-Mission.md).
 
 You can get support from DJI with the following methods:
 
-- Post questions in [**Stackoverflow**](http://stackoverflow.com) using [**dji-sdk**](http://stackoverflow.com/questions/tagged/dji-sdk) tag
+- Post questions in DJI Developer Forums:
+[**Chinese Forum**](https://bbs.dji.com/forum-79-1.html?from=developer)
+, [**English Forum**](https://forum.dji.com/forum-139-1.html?from=developer)
 - dev@dji.com
 
 ## Join Us
