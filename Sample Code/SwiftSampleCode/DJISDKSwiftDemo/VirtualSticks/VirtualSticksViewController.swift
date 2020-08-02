@@ -22,11 +22,6 @@ enum FLIGHT_MODE {
     case HORIZONTAL_SINE_WAVE
 }
 
-enum COORDINATE_SYSTEM {
-    case GROUND
-    case BODY
-}
-
 class VirtualSticksViewController: UIViewController {
     
     var flightController: DJIFlightController?
@@ -142,10 +137,8 @@ class VirtualSticksViewController: UIViewController {
         
         if sender.selectedSegmentIndex == 0 {
             self.flightController?.rollPitchCoordinateSystem = DJIVirtualStickFlightCoordinateSystem.ground
-            print("ground")
         } else if sender.selectedSegmentIndex == 1 {
             self.flightController?.rollPitchCoordinateSystem = DJIVirtualStickFlightCoordinateSystem.body
-            print("body")
         }
         
     }
@@ -156,10 +149,8 @@ class VirtualSticksViewController: UIViewController {
         
         if sender.selectedSegmentIndex == 0 {
             self.flightController?.rollPitchControlMode = DJIVirtualStickRollPitchControlMode.velocity
-            print("velocity")
         } else if sender.selectedSegmentIndex == 1 {
             self.flightController?.rollPitchControlMode = DJIVirtualStickRollPitchControlMode.angle
-            print("angle")
         }
     }
     
@@ -168,10 +159,8 @@ class VirtualSticksViewController: UIViewController {
         
         if sender.selectedSegmentIndex == 0 {
             self.flightController?.yawControlMode = DJIVirtualStickYawControlMode.angularVelocity
-            print("angular velocity")
         } else if sender.selectedSegmentIndex == 1 {
             self.flightController?.yawControlMode = DJIVirtualStickYawControlMode.angle
-            print("angle")
         }
     }
     
