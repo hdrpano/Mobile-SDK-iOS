@@ -22,6 +22,11 @@ enum FLIGHT_MODE {
     case HORIZONTAL_SINE_WAVE
 }
 
+enum COORDINATE_SYSTEM {
+    case GROUND
+    case BODY
+}
+
 class VirtualSticksViewController: UIViewController {
     
     var flightController: DJIFlightController?
@@ -35,7 +40,6 @@ class VirtualSticksViewController: UIViewController {
     
     var flightMode: FLIGHT_MODE?
     
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -49,6 +53,15 @@ class VirtualSticksViewController: UIViewController {
                 self.flightController = fc
                 
                 print("We have a reference to the FC")
+                
+                // Default the coordinate system to ground
+                self.flightController?.rollPitchCoordinateSystem = DJIVirtualStickFlightCoordinateSystem.ground
+                
+                // Default roll/pitch control mode to velocity
+                self.flightController?.rollPitchControlMode = DJIVirtualStickRollPitchControlMode.velocity
+                
+                // Set control modes
+                self.flightController?.yawControlMode = DJIVirtualStickYawControlMode.angularVelocity
             }
             
         }
@@ -57,7 +70,6 @@ class VirtualSticksViewController: UIViewController {
     // User clicks the enter virtual sticks button
     @IBAction func enableVirtualSticks(_ sender: Any) {
         toggleVirtualSticks(enabled: true)
-        
     }
     
     // User clicks the exit virtual sticks button
@@ -73,11 +85,6 @@ class VirtualSticksViewController: UIViewController {
             
             // If there's an error let's stop
             guard error == nil else { return }
-            
-            // Set control modes
-            self.flightController?.rollPitchControlMode = DJIVirtualStickRollPitchControlMode.velocity
-            self.flightController?.rollPitchCoordinateSystem = DJIVirtualStickFlightCoordinateSystem.ground
-            self.flightController?.yawControlMode = DJIVirtualStickYawControlMode.angularVelocity
             
             print("Are virtual sticks enabled? \(enabled)")
             
@@ -129,7 +136,47 @@ class VirtualSticksViewController: UIViewController {
         timer = Timer.scheduledTimer(timeInterval: 0.05, target: self, selector: #selector(timerLoop), userInfo: nil, repeats: true)
     }
     
+    // Change the coordinate system between ground/body and observe the behavior
+    // HIGHLY recommended to test first in the iOS simulator to observe the values in timerLoop and then test outdoors
+    @IBAction func changeCoordinateSystem(_ sender: UISegmentedControl) {
+        
+        if sender.selectedSegmentIndex == 0 {
+            self.flightController?.rollPitchCoordinateSystem = DJIVirtualStickFlightCoordinateSystem.ground
+            print("ground")
+        } else if sender.selectedSegmentIndex == 1 {
+            self.flightController?.rollPitchCoordinateSystem = DJIVirtualStickFlightCoordinateSystem.body
+            print("body")
+        }
+        
+    }
+    
+    // Change the control mode between velocity/angle and observe the behavior
+    // HIGHLY recommended to test first in the iOS simulator to observe the values in timerLoop and then test outdoors
+    @IBAction func changeRollPitchControlMode(_ sender: UISegmentedControl) {
+        
+        if sender.selectedSegmentIndex == 0 {
+            self.flightController?.rollPitchControlMode = DJIVirtualStickRollPitchControlMode.velocity
+            print("velocity")
+        } else if sender.selectedSegmentIndex == 1 {
+            self.flightController?.rollPitchControlMode = DJIVirtualStickRollPitchControlMode.angle
+            print("angle")
+        }
+    }
+    
+    // Change the yaw control mode between angular velocity and angle
+    @IBAction func changeYawControlMode(_ sender: UISegmentedControl) {
+        
+        if sender.selectedSegmentIndex == 0 {
+            self.flightController?.yawControlMode = DJIVirtualStickYawControlMode.angularVelocity
+            print("angular velocity")
+        } else if sender.selectedSegmentIndex == 1 {
+            self.flightController?.yawControlMode = DJIVirtualStickYawControlMode.angle
+            print("angle")
+        }
+    }
+    
     // Timer loop to send values to the flight controller
+    // It's recommend to run this in the iOS simulator to see the x/y/z values printed to the debug window
     @objc func timerLoop() {
         
         // Add velocity to radians before we do any calculation

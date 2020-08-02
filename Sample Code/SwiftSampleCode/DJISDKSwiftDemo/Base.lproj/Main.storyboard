@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="3Wf-wJ-3VA">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="3Wf-wJ-3VA">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -251,12 +251,12 @@
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
+                                <exclude reference="JgX-kP-hhW"/>
+                                <exclude reference="bHZ-u7-P53"/>
                                 <exclude reference="msx-SD-xuA"/>
                                 <exclude reference="pxt-sB-81W"/>
                                 <exclude reference="MSG-Dh-RFE"/>
                                 <exclude reference="MSe-OZ-oRK"/>
-                                <exclude reference="JgX-kP-hhW"/>
-                                <exclude reference="bHZ-u7-P53"/>
                                 <exclude reference="tfv-0m-Y9V"/>
                                 <exclude reference="vEk-bx-HgH"/>
                                 <exclude reference="19g-7g-QL2"/>
@@ -267,6 +267,9 @@
                         </variation>
                         <variation key="heightClass=compact">
                             <mask key="constraints">
+                                <include reference="JgX-kP-hhW"/>
+                                <include reference="bHZ-u7-P53"/>
+                                <exclude reference="e3F-Qf-PFt"/>
                                 <exclude reference="j1p-FV-ae2"/>
                                 <include reference="msx-SD-xuA"/>
                                 <include reference="pxt-sB-81W"/>
@@ -274,9 +277,6 @@
                                 <include reference="MSe-OZ-oRK"/>
                                 <exclude reference="WzN-55-Wxv"/>
                                 <exclude reference="m6l-ns-E15"/>
-                                <include reference="JgX-kP-hhW"/>
-                                <include reference="bHZ-u7-P53"/>
-                                <exclude reference="e3F-Qf-PFt"/>
                                 <exclude reference="Qvx-yB-xPX"/>
                                 <exclude reference="YBP-Cc-79l"/>
                                 <exclude reference="fyU-cx-3Wm"/>
@@ -581,6 +581,54 @@
                                     <action selector="verticalOrbit:" destination="Pxd-4i-Efk" eventType="touchUpInside" id="fjm-nC-jNf"/>
                                 </connections>
                             </button>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="3dl-bH-aEJ">
+                                <rect key="frame" x="26" y="291" width="129" height="32"/>
+                                <segments>
+                                    <segment title="Ground"/>
+                                    <segment title="Body"/>
+                                </segments>
+                                <connections>
+                                    <action selector="changeCoordinateSystem:" destination="Pxd-4i-Efk" eventType="valueChanged" id="r7y-fB-enL"/>
+                                </connections>
+                            </segmentedControl>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="stj-S3-8Dl">
+                                <rect key="frame" x="26" y="378" width="137" height="32"/>
+                                <segments>
+                                    <segment title="Velocity"/>
+                                    <segment title="Angle"/>
+                                </segments>
+                                <connections>
+                                    <action selector="changeRollPitchControlMode:" destination="Pxd-4i-Efk" eventType="valueChanged" id="qNV-mE-NR0"/>
+                                </connections>
+                            </segmentedControl>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Coordinate System:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XDh-2c-dnA">
+                                <rect key="frame" x="26" y="260" width="151" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Roll/Pitch Control Mode:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SYf-Ex-f7P">
+                                <rect key="frame" x="26" y="347" width="185" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Yaw Control Mode:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W02-BJ-Xqf">
+                                <rect key="frame" x="26" y="434" width="144" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="vc0-Q8-6CX">
+                                <rect key="frame" x="26" y="465" width="241" height="32"/>
+                                <segments>
+                                    <segment title="Angular Velocity"/>
+                                    <segment title="Angle"/>
+                                </segments>
+                                <connections>
+                                    <action selector="changeYawControlMode:" destination="Pxd-4i-Efk" eventType="valueChanged" id="aXA-n9-X1Y"/>
+                                </connections>
+                            </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
@@ -590,13 +638,25 @@
                             <constraint firstItem="A5D-Bw-eaS" firstAttribute="top" secondItem="nh1-iA-vbP" secondAttribute="bottom" constant="10" id="33c-4Q-jGs"/>
                             <constraint firstItem="vwg-9S-C9T" firstAttribute="leading" secondItem="WcZ-Fs-BkQ" secondAttribute="leadingMargin" constant="10" id="4pH-XU-pTX"/>
                             <constraint firstItem="xyw-1D-5l4" firstAttribute="top" secondItem="EZv-Sz-ryu" secondAttribute="bottom" constant="10" id="6Qw-Cz-oMA"/>
+                            <constraint firstItem="XDh-2c-dnA" firstAttribute="leading" secondItem="WcZ-Fs-BkQ" secondAttribute="leadingMargin" constant="10" id="8X9-RL-Fq2"/>
                             <constraint firstItem="Yhj-Ez-Wx5" firstAttribute="leading" secondItem="WcZ-Fs-BkQ" secondAttribute="leadingMargin" constant="10" id="ASs-fD-RWT"/>
+                            <constraint firstItem="W02-BJ-Xqf" firstAttribute="leading" secondItem="WcZ-Fs-BkQ" secondAttribute="leadingMargin" constant="10" id="Ch0-Ok-rkd"/>
                             <constraint firstItem="EZv-Sz-ryu" firstAttribute="top" secondItem="A5D-Bw-eaS" secondAttribute="bottom" constant="10" id="Efe-Ej-WX2"/>
                             <constraint firstItem="fcd-gm-ugW" firstAttribute="leading" secondItem="WcZ-Fs-BkQ" secondAttribute="leadingMargin" constant="10" id="HOB-cq-Gzb"/>
+                            <constraint firstItem="SYf-Ex-f7P" firstAttribute="top" secondItem="3dl-bH-aEJ" secondAttribute="bottom" constant="25" id="J30-DN-Oi0"/>
+                            <constraint firstItem="3dl-bH-aEJ" firstAttribute="top" secondItem="XDh-2c-dnA" secondAttribute="bottom" constant="10" id="J4w-Ow-NIT"/>
+                            <constraint firstItem="stj-S3-8Dl" firstAttribute="leading" secondItem="WcZ-Fs-BkQ" secondAttribute="leadingMargin" constant="10" id="Qa4-A3-FA4"/>
+                            <constraint firstItem="3dl-bH-aEJ" firstAttribute="leading" secondItem="WcZ-Fs-BkQ" secondAttribute="leadingMargin" constant="10" id="R1r-ju-A6A"/>
                             <constraint firstItem="fcd-gm-ugW" firstAttribute="top" secondItem="vwg-9S-C9T" secondAttribute="bottom" constant="10" id="R7n-qk-Vqt"/>
+                            <constraint firstItem="SYf-Ex-f7P" firstAttribute="leading" secondItem="WcZ-Fs-BkQ" secondAttribute="leadingMargin" constant="10" id="Tzg-CU-M9O"/>
                             <constraint firstItem="EZv-Sz-ryu" firstAttribute="leading" secondItem="vwg-9S-C9T" secondAttribute="trailing" constant="20" id="Ub8-kr-sTD"/>
+                            <constraint firstItem="vc0-Q8-6CX" firstAttribute="top" secondItem="W02-BJ-Xqf" secondAttribute="bottom" constant="10" id="YBM-zu-CAq"/>
                             <constraint firstItem="knf-gX-gHd" firstAttribute="leading" secondItem="WcZ-Fs-BkQ" secondAttribute="leadingMargin" constant="10" id="a58-ax-uRF"/>
+                            <constraint firstItem="W02-BJ-Xqf" firstAttribute="top" secondItem="stj-S3-8Dl" secondAttribute="bottom" constant="25" id="eTS-D1-HoB"/>
+                            <constraint firstItem="stj-S3-8Dl" firstAttribute="top" secondItem="SYf-Ex-f7P" secondAttribute="bottom" constant="10" id="eub-Ce-kHv"/>
                             <constraint firstItem="xyw-1D-5l4" firstAttribute="leading" secondItem="fcd-gm-ugW" secondAttribute="trailing" constant="20" id="fCf-k5-krn"/>
+                            <constraint firstItem="vc0-Q8-6CX" firstAttribute="leading" secondItem="WcZ-Fs-BkQ" secondAttribute="leadingMargin" constant="10" id="pTq-4r-462"/>
+                            <constraint firstItem="XDh-2c-dnA" firstAttribute="top" secondItem="Yhj-Ez-Wx5" secondAttribute="bottom" constant="20" id="upq-H5-tkp"/>
                             <constraint firstItem="knf-gX-gHd" firstAttribute="top" secondItem="nh1-iA-vbP" secondAttribute="bottom" constant="10" id="xAM-NG-Y5v"/>
                         </constraints>
                     </view>
